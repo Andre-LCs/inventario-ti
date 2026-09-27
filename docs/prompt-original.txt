@@ -1,0 +1,1046 @@
+Você é um desenvolvedor full-stack experiente, especializado em aplicações web responsivas, PWA, JavaScript/TypeScript, leitura de códigos de barras e integração com Google Sheets.
+
+Quero que você desenvolva um sistema completo de inventário de computadores para ser utilizado principalmente em um celular Android.
+
+O sistema será utilizado por apenas UMA pessoa por vez durante o inventário físico de computadores. Portanto, não quero uma arquitetura empresarial complexa, servidor pago, banco de dados pago ou sistema multiusuário.
+
+O objetivo é ter uma solução funcional, simples, rápida e totalmente gratuita para testar e utilizar no trabalho.
+
+==================================================
+
+1. OBJETIVO DO SISTEMA
+   ==================================================
+
+O sistema será utilizado para realizar o levantamento físico de computadores que estão desligados, armazenados em estoque e que podem estar funcionando ou apresentar defeitos.
+
+Para cada computador será necessário registrar:
+
+* Número de patrimônio
+* Número de série
+* Marca
+* Modelo
+* Estado
+* Situação
+* Componentes encontrados
+* Observações/laudo
+* Data e hora do registro
+
+O sistema deve facilitar ao máximo o trabalho utilizando a câmera do celular para ler os códigos de barras existentes no patrimônio e no número de série.
+
+O objetivo é eliminar a maior quantidade possível de digitação manual.
+
+==================================================
+2. RESTRIÇÃO FUNDAMENTAL: CUSTO ZERO
+====================================
+
+O sistema deve ser projetado para funcionar sem custos obrigatórios.
+
+NÃO utilizar:
+
+* servidor pago
+* VPS paga
+* banco de dados pago
+* hospedagem paga
+* domínio pago
+* serviços que exijam assinatura
+* APIs pagas
+* serviços proprietários pagos
+
+Priorizar tecnologias gratuitas e/ou open source.
+
+O sistema deve poder ser publicado gratuitamente, por exemplo, utilizando GitHub Pages ou outra solução gratuita adequada.
+
+Não comprar domínio.
+
+Não criar backend simplesmente por criar.
+
+Como somente uma pessoa utilizará o sistema por vez, o Google Sheets pode funcionar como armazenamento permanente dos registros.
+
+==================================================
+3. ARQUITETURA
+==============
+
+Criar uma aplicação web responsiva e instalável como PWA.
+
+Arquitetura desejada:
+
+CELULAR
+↓
+PWA
+↓
+Armazenamento local do navegador
+↓
+Google Sheets API
+↓
+Planilha Google Sheets
+
+O sistema deve continuar funcionando quando estiver temporariamente sem internet.
+
+Os registros devem ser armazenados localmente e posteriormente sincronizados com o Google Sheets.
+
+A aplicação deve ser capaz de funcionar como um aplicativo instalado na tela inicial do Android.
+
+==================================================
+4. TECNOLOGIAS
+==============
+
+Priorizar:
+
+* HTML5
+* CSS3
+* JavaScript ou TypeScript
+* PWA
+* IndexedDB para armazenamento local
+* Google Sheets API
+* Google OAuth 2.0 para autorização
+* GitHub Pages ou hospedagem estática gratuita
+
+Se React realmente simplificar ou melhorar a manutenção, pode utilizar React + TypeScript.
+
+Caso React não seja necessário, prefira HTML + CSS + JavaScript/TypeScript puro para manter o projeto simples.
+
+Não utilizar Node.js como servidor de produção.
+
+Node.js pode ser utilizado apenas durante o desenvolvimento caso seja necessário.
+
+==================================================
+5. INTERFACE PRINCIPAL
+======================
+
+Criar uma interface limpa, profissional e otimizada para celular.
+
+A tela inicial deve mostrar:
+
+INVENTÁRIO TI
+
+Total de computadores
+
+OK
+Defeito
+
+Formatados
+Em formatação
+Não formatados
+
+Botões:
+
+* NOVO COMPUTADOR
+
+📦 ESTOQUE
+
+📊 RELATÓRIOS
+
+⚙️ CONFIGURAÇÕES
+
+==================================================
+6. CADASTRO DE COMPUTADOR
+=========================
+
+Criar uma tela chamada:
+
+NOVO COMPUTADOR
+
+O formulário deve seguir esta ordem:
+
+1. Patrimônio
+2. Número de série
+3. Marca
+4. Modelo
+5. Estado
+6. Situação
+7. Componentes
+8. Observações
+9. Salvar
+
+==================================================
+7. LEITOR DE CÓDIGO DE BARRAS
+=============================
+
+Os computadores possuem códigos de barras tanto no patrimônio quanto no número de série.
+
+Criar um leitor utilizando a câmera do celular.
+
+Criar botão:
+
+📷 ESCANEAR PATRIMÔNIO
+
+Ao tocar, solicitar acesso à câmera.
+
+Após identificar o código, preencher automaticamente:
+
+Patrimônio: 123456789
+
+Depois:
+
+📷 ESCANEAR Nº DE SÉRIE
+
+Preencher automaticamente:
+
+Número de série: ABC123456789
+
+IMPORTANTE:
+
+Não depender exclusivamente da leitura automática.
+
+Sempre disponibilizar:
+
+"Digitar manualmente"
+
+como alternativa.
+
+Se a tecnologia de leitura de código de barras utilizada não for compatível com determinado navegador, o usuário deve conseguir continuar o cadastro manualmente.
+
+Permitir códigos de barras comuns utilizados em etiquetas de patrimônio.
+
+Evitar que a câmera fique ativa após o código ser reconhecido.
+
+Adicionar botão:
+
+"Fechar câmera"
+
+==================================================
+8. MARCA
+========
+
+Criar seleção:
+
+Dell
+Lenovo
+HP
+Acer
+Asus
+Samsung
+Positivo
+Intelbras
+Multilaser
+Outra
+
+Caso "Outra" seja selecionado, permitir digitação.
+
+==================================================
+9. MODELO
+=========
+
+Campo de texto:
+
+Modelo
+
+Exemplo:
+
+ThinkPad L14 Gen 2
+OptiPlex 3080
+ProDesk 400
+Aspire 5
+
+==================================================
+10. ESTADO
+==========
+
+Criar botões grandes:
+
+🟢 OK
+
+🔴 DEFEITO
+
+O usuário deve conseguir selecionar apenas uma opção.
+
+==================================================
+11. SITUAÇÃO
+============
+
+Criar:
+
+⚪ NÃO FORMATADO
+
+🟡 EM FORMATAÇÃO
+
+🟢 FORMATADO
+
+Permitir apenas uma opção.
+
+==================================================
+12. COMPONENTES / LAUDO
+=======================
+
+Criar uma seção:
+
+COMPONENTES ENCONTRADOS
+
+Checkboxes:
+
+☐ SSD
+☐ HD
+☐ MEMÓRIA RAM
+
+Também criar:
+
+☐ Sem SSD
+☐ Sem HD
+☐ Sem memória RAM
+
+Permitir informações adicionais.
+
+Se SSD estiver selecionado:
+
+Capacidade SSD:
+
+[ ______ ] GB
+
+Se HD estiver selecionado:
+
+Capacidade HD:
+
+[ ______ ] GB
+
+Se RAM estiver selecionada:
+
+Memória RAM:
+
+[ ______ ] GB
+
+Quantidade de módulos:
+
+[ ______ ]
+
+Não obrigar o usuário a preencher informações que não conseguiu verificar.
+
+==================================================
+13. OBSERVAÇÕES / LAUDO
+=======================
+
+Criar campo de texto:
+
+OBSERVAÇÕES / LAUDO
+
+Exemplos:
+
+Não liga.
+Sem fonte.
+Sem SSD.
+Sem memória RAM.
+HD com defeito.
+Tela quebrada.
+Equipamento aparentemente funcionando.
+
+Permitir texto livre.
+
+==================================================
+14. DATA E HORA
+===============
+
+Preencher automaticamente:
+
+Data
+Hora
+
+O usuário não deve precisar digitar essas informações.
+
+==================================================
+15. REGISTRADOR
+===============
+
+Como o sistema será utilizado por apenas uma pessoa por vez, não criar sistema complexo de usuários.
+
+Criar uma configuração:
+
+Nome do registrador
+
+Exemplo:
+
+Gabriel
+
+Salvar essa informação localmente.
+
+Todos os computadores cadastrados devem receber automaticamente:
+
+Registrado por: Gabriel
+
+Permitir alterar o nome nas configurações.
+
+==================================================
+16. SALVAMENTO
+==============
+
+Ao tocar:
+
+SALVAR COMPUTADOR
+
+O sistema deve:
+
+1. Validar os campos obrigatórios.
+2. Criar um ID único para o registro.
+3. Salvar imediatamente no armazenamento local.
+4. Marcar como "Pendente de sincronização".
+5. Tentar sincronizar com o Google Sheets.
+6. Caso a sincronização funcione, marcar como "Sincronizado".
+7. Caso falhe, manter o registro localmente.
+
+Nunca perder um registro porque a internet caiu.
+
+==================================================
+17. FUNCIONAMENTO OFFLINE
+=========================
+
+Esta é uma funcionalidade obrigatória.
+
+O sistema deve utilizar IndexedDB para armazenar os registros localmente.
+
+Se estiver sem internet:
+
+O usuário deve continuar podendo:
+
+* abrir o sistema
+* cadastrar computadores
+* escanear códigos
+* consultar registros já cadastrados
+* editar registros
+* salvar novos registros
+
+Os registros devem ficar marcados:
+
+⏳ Pendente de sincronização
+
+Quando a internet voltar:
+
+Sincronizar automaticamente.
+
+Criar também:
+
+🔄 SINCRONIZAR AGORA
+
+==================================================
+18. GOOGLE SHEETS
+=================
+
+Utilizar a Google Sheets API oficial.
+
+Criar uma página:
+
+CONFIGURAÇÕES → GOOGLE SHEETS
+
+Permitir conectar uma conta Google através do processo oficial de autorização.
+
+Não solicitar senha do Google dentro da aplicação.
+
+Não armazenar senha do Google.
+
+O usuário deve autorizar o acesso de forma segura.
+
+Depois de conectado, permitir informar ou selecionar a planilha utilizada.
+
+==================================================
+19. ESTRUTURA DA PLANILHA
+=========================
+
+Criar automaticamente ou documentar claramente uma planilha com as seguintes colunas:
+
+ID
+Patrimônio
+Número de Série
+Marca
+Modelo
+Estado
+Situação
+Possui SSD
+Capacidade SSD
+Possui HD
+Capacidade HD
+Possui Memória RAM
+Capacidade RAM
+Quantidade de Módulos RAM
+Observações / Laudo
+Registrado Por
+Data
+Hora
+Última Atualização
+
+Adicionar também:
+
+Status de Sincronização
+
+==================================================
+20. SINCRONIZAÇÃO
+=================
+
+Cada registro deve possuir um ID único.
+
+Isso é extremamente importante para evitar duplicações.
+
+Se o registro ainda não existir na planilha:
+
+CRIAR LINHA.
+
+Se o registro já existir:
+
+ATUALIZAR LINHA.
+
+Nunca criar uma segunda linha simplesmente porque a sincronização foi executada novamente.
+
+Exemplo:
+
+ID 839201
+
+Se a sincronização for repetida, localizar ID 839201 e atualizar o registro existente.
+
+==================================================
+21. DETECÇÃO DE DUPLICIDADE
+===========================
+
+O sistema deve verificar se o patrimônio já foi cadastrado.
+
+Também verificar se o número de série já foi cadastrado.
+
+Se encontrar:
+
+"Este computador já está cadastrado."
+
+Mostrar os dados encontrados.
+
+Permitir cancelar ou abrir o registro existente.
+
+==================================================
+22. MODO INVENTÁRIO
+===================
+
+Criar uma função extremamente importante:
+
+⚡ MODO INVENTÁRIO
+
+Esse modo será utilizado para registrar muitos computadores seguidos.
+
+Fluxo:
+
+Escanear patrimônio
+↓
+Escanear número de série
+↓
+Marca
+↓
+Modelo
+↓
+Estado
+↓
+Situação
+↓
+Componentes
+↓
+Observação
+↓
+Salvar
+↓
+Novo computador automaticamente
+
+Depois de salvar, abrir imediatamente um novo formulário.
+
+Manter algumas informações previamente selecionadas quando fizer sentido.
+
+Exemplo:
+
+Se o registrador continuar sendo Gabriel, não pedir novamente.
+
+==================================================
+23. ESTOQUE
+===========
+
+Criar tela:
+
+📦 ESTOQUE
+
+Mostrar todos os computadores registrados.
+
+Cada item deve mostrar:
+
+Patrimônio
+Número de série
+Marca
+Modelo
+Estado
+Situação
+Data
+
+Criar pesquisa por:
+
+Patrimônio
+Número de série
+Modelo
+Marca
+
+Criar filtros:
+
+Estado
+Situação
+Marca
+Data
+Status de sincronização
+
+==================================================
+24. DETALHES
+============
+
+Ao tocar em um computador:
+
+Mostrar todas as informações.
+
+Permitir:
+
+Editar
+Salvar alterações
+Excluir
+
+Antes de excluir:
+
+"Tem certeza que deseja excluir este computador?"
+
+Se confirmado:
+
+Excluir localmente e sincronizar a exclusão com o Google Sheets.
+
+==================================================
+25. DASHBOARD
+=============
+
+Criar indicadores automáticos:
+
+TOTAL
+
+OK
+
+DEFEITO
+
+FORMATADO
+
+EM FORMATAÇÃO
+
+NÃO FORMATADO
+
+Também mostrar quantidade por marca.
+
+Exemplo:
+
+Dell: 32
+Lenovo: 41
+HP: 27
+Acer: 18
+
+Atualizar os números automaticamente.
+
+==================================================
+26. RELATÓRIOS
+==============
+
+Criar tela:
+
+📊 RELATÓRIOS
+
+Mostrar:
+
+Total de computadores
+Total OK
+Total com defeito
+Total formatado
+Total em formatação
+Total não formatado
+
+Mostrar também:
+
+Computadores por marca.
+
+Mostrar:
+
+Registros sincronizados
+Registros pendentes
+Registros com erro
+
+==================================================
+27. EXPORTAÇÃO
+==============
+
+Criar:
+
+📊 EXPORTAR EXCEL
+
+Gerar arquivo:
+
+estoque_computadores_AAAA-MM-DD.xlsx
+
+Criar também:
+
+📄 EXPORTAR CSV
+
+Arquivo:
+
+estoque_computadores_AAAA-MM-DD.csv
+
+Permitir:
+
+Exportar todos
+
+Exportar somente filtrados
+
+A exportação deve funcionar mesmo sem internet, utilizando os dados armazenados localmente.
+
+==================================================
+28. BACKUP
+==========
+
+Criar opção:
+
+💾 EXPORTAR BACKUP
+
+Permitir exportar todos os dados locais para um arquivo JSON.
+
+Criar também:
+
+📥 IMPORTAR BACKUP
+
+Assim, se o usuário trocar de celular ou perder os dados locais, poderá restaurar o inventário.
+
+Explicar claramente no README que o Google Sheets também deve ser utilizado como backup externo.
+
+==================================================
+29. PWA
+=======
+
+Transformar o sistema em Progressive Web App.
+
+Criar:
+
+manifest.json
+service worker
+ícones apropriados
+
+Permitir instalação na tela inicial do Android.
+
+Quando instalado, o sistema deve abrir em modo semelhante a aplicativo.
+
+Criar funcionamento offline através do service worker.
+
+==================================================
+30. INTERFACE
+=============
+
+Priorizar celular.
+
+Os botões devem ser grandes e fáceis de tocar.
+
+Não criar tabelas extremamente largas no celular.
+
+Usar cards para visualizar registros.
+
+A interface deve ser simples.
+
+Priorizar velocidade.
+
+Evitar animações desnecessárias.
+
+Usar mensagens claras.
+
+Exemplo:
+
+"Computador salvo com sucesso."
+
+"Registro pendente de sincronização."
+
+"Sincronização concluída."
+
+"Patrimônio já cadastrado."
+
+"Não foi possível conectar ao Google Sheets."
+
+==================================================
+31. CONFIGURAÇÕES
+=================
+
+Criar tela:
+
+⚙️ CONFIGURAÇÕES
+
+Opções:
+
+Nome do registrador
+Google Sheets
+Sincronização
+Backup
+Exportação
+Informações do sistema
+
+Mostrar:
+
+Status da internet
+Status do Google Sheets
+Quantidade de registros locais
+Quantidade pendente
+Última sincronização
+
+==================================================
+32. SEGURANÇA
+=============
+
+Não armazenar senhas do Google.
+
+Não colocar credenciais secretas diretamente no código-fonte público.
+
+Não expor tokens privados no GitHub.
+
+Explicar no README como configurar corretamente OAuth.
+
+Se alguma credencial precisar ser configurada, utilizar variáveis/configurações apropriadas.
+
+==================================================
+33. GITHUB
+==========
+
+Estruturar o projeto para poder ser publicado no GitHub.
+
+Criar:
+
+README.md
+.gitignore
+
+Nunca incluir:
+
+senhas
+tokens
+credenciais
+chaves privadas
+arquivos secretos
+
+Criar exemplo de configuração:
+
+.env.example
+
+quando necessário.
+
+==================================================
+34. README — OBRIGATÓRIO
+========================
+
+Além do sistema, criar um README.md extremamente completo e escrito em português.
+
+O README deve explicar para uma pessoa que está começando em programação.
+
+Incluir:
+
+1. O que é o projeto
+2. Para que serve
+3. Como funciona
+4. Arquitetura
+5. Tecnologias utilizadas
+6. Estrutura das pastas
+7. Como instalar as ferramentas necessárias
+8. Como executar localmente
+9. Como criar/configurar o Google Sheets
+10. Como criar um projeto no Google Cloud
+11. Como ativar Google Sheets API
+12. Como configurar OAuth
+13. Como configurar a aplicação
+14. Como testar
+15. Como configurar o GitHub
+16. Como publicar gratuitamente
+17. Como abrir no celular
+18. Como instalar como PWA
+19. Como permitir acesso à câmera
+20. Como utilizar o scanner
+21. Como fazer o primeiro inventário
+22. Como utilizar o Modo Inventário
+23. Como sincronizar
+24. Como trabalhar offline
+25. Como exportar Excel
+26. Como exportar CSV
+27. Como fazer backup
+28. Como restaurar backup
+29. Como solucionar problemas
+30. Como trocar a planilha
+31. Como trocar o registrador
+32. Como atualizar o sistema
+33. Limitações conhecidas
+34. Cuidados com os dados
+35. Perguntas frequentes
+
+==================================================
+35. README — TUTORIAL DE USO
+============================
+
+Criar uma seção:
+
+"COMO UTILIZAR NO TRABALHO"
+
+Explicar passo a passo:
+
+1. Abrir o sistema.
+2. Conferir conexão.
+3. Abrir Modo Inventário.
+4. Escanear patrimônio.
+5. Escanear número de série.
+6. Conferir os dados.
+7. Informar marca e modelo.
+8. Selecionar estado.
+9. Selecionar situação.
+10. Informar componentes.
+11. Adicionar observação se necessário.
+12. Salvar.
+13. Passar para o próximo computador.
+14. Sincronizar.
+15. Conferir Google Sheets.
+16. Exportar Excel ao terminar.
+
+==================================================
+36. README — SOLUÇÃO DE PROBLEMAS
+=================================
+
+Documentar problemas comuns:
+
+Scanner não abre câmera.
+
+Google não autoriza.
+
+Planilha não sincroniza.
+
+Internet caiu.
+
+Registro ficou pendente.
+
+Código de barras não reconhecido.
+
+PWA não instala.
+
+Google Sheets API atingiu limite.
+
+Dados duplicados.
+
+Celular foi trocado.
+
+Backup não foi encontrado.
+
+Explicar a solução para cada problema.
+
+==================================================
+37. TESTES
+==========
+
+Antes de considerar o projeto finalizado, testar:
+
+* Cadastro
+* Edição
+* Exclusão
+* Pesquisa
+* Filtros
+* Scanner
+* Digitação manual
+* Duplicidade
+* Dashboard
+* Google Sheets
+* Sincronização
+* Falha de internet
+* Recuperação de internet
+* Exportação XLSX
+* Exportação CSV
+* Backup JSON
+* Restauração JSON
+* PWA
+* Responsividade
+* Câmera do celular
+
+==================================================
+38. DADOS DE TESTE
+==================
+
+Criar uma opção para inserir dados fictícios de teste.
+
+Exemplo:
+
+10 computadores fictícios.
+
+Isso deve facilitar o desenvolvimento e os testes sem utilizar dados reais da empresa.
+
+Criar botão:
+
+"Limpar dados de teste"
+
+Não apagar dados reais acidentalmente.
+
+==================================================
+39. PRIVACIDADE
+===============
+
+Adicionar uma seção explicando quais informações são armazenadas.
+
+O sistema deve deixar claro que os dados dos computadores podem conter informações patrimoniais da empresa.
+
+Não enviar dados para serviços externos além do Google Sheets configurado pelo usuário.
+
+Não utilizar analytics, publicidade ou rastreamento desnecessário.
+
+==================================================
+40. IMPORTANTE SOBRE O RESULTADO
+================================
+
+Não quero apenas uma demonstração visual.
+
+Quero um projeto funcional.
+
+Entregar:
+
+* Todos os arquivos necessários.
+* Código organizado.
+* README.md completo.
+* Configuração PWA.
+* Scanner.
+* Armazenamento local.
+* Integração Google Sheets.
+* Exportação Excel.
+* Exportação CSV.
+* Backup.
+* Restauração.
+* Dashboard.
+* Modo Inventário.
+
+Se alguma funcionalidade não puder ser implementada exatamente como descrita por limitações técnicas ou gratuitas, explique claramente a limitação e implemente a alternativa gratuita mais próxima.
+
+Não invente APIs ou bibliotecas inexistentes.
+
+Utilize documentação oficial das tecnologias quando necessário.
+
+==================================================
+41. PRIORIDADE DO PROJETO
+=========================
+
+A prioridade é:
+
+1. Funcionar no celular.
+2. Ser gratuito.
+3. Ser simples de usar.
+4. Não perder dados.
+5. Facilitar leitura dos códigos de barras.
+6. Registrar rapidamente muitos computadores.
+7. Sincronizar com Google Sheets.
+8. Permitir exportação para Excel.
+9. Funcionar offline.
+10. Ser fácil de manter.
+
+Não adicionar funcionalidades desnecessárias que aumentem a complexidade.
+
+==================================================
+42. ENTREGA FINAL
+=================
+
+Ao terminar o desenvolvimento:
+
+1. Mostrar a estrutura completa do projeto.
+2. Explicar cada arquivo importante.
+3. Explicar como executar localmente.
+4. Explicar como configurar Google Sheets.
+5. Explicar como publicar gratuitamente.
+6. Explicar como abrir no Android.
+7. Explicar como instalar como PWA.
+8. Explicar como testar o scanner.
+9. Explicar como fazer o primeiro inventário.
+10. Explicar como fazer backup.
+11. Explicar como restaurar.
+12. Explicar como exportar para Excel.
+
+Se estiver trabalhando em um ambiente que permita criar arquivos, gere todos os arquivos do projeto diretamente.
+
+Se não puder criar os arquivos diretamente, forneça o código completo de cada arquivo, sem omitir partes importantes e sem usar placeholders como "adicione o restante do código".
+
+O projeto deve estar pronto para ser executado seguindo o README.

@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#092b38">
+  <meta name="description" content="Inventário de computadores com planilha compartilhada da equipe e funcionamento offline.">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <title>Inventário TI</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23092b38'/%3E%3Crect x='13' y='15' width='38' height='27' rx='4' fill='none' stroke='%235ee6b8' stroke-width='5'/%3E%3Cpath d='M24 51h16M32 42v9' stroke='%235ee6b8' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow" id="modeLabel">CONTROLE LOCAL</p>
+      <h1>Inventário TI</h1>
+    </div>
+    <div class="topbar-actions">
+      <button class="icon-button" id="installButton" type="button" hidden aria-label="Instalar aplicativo">Instalar</button>
+      <button class="icon-button" id="settingsButton" type="button">Configurar</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="summary" aria-label="Resumo do inventário">
+      <article class="summary-card summary-main">
+        <span>Total registrado</span>
+        <strong id="totalCount">0</strong>
+        <small id="scopeLabel">neste aparelho</small>
+      </article>
+      <article class="summary-card">
+        <span>Funcionando</span>
+        <strong id="okCount">0</strong>
+      </article>
+      <article class="summary-card">
+        <span>Com defeito</span>
+        <strong id="faultCount">0</strong>
+      </article>
+    </section>
+
+    <aside class="sync-panel" id="syncPanel" data-tone="local" aria-live="polite">
+      <div class="sync-text">
+        <strong id="syncTitle">Planilha da equipe não configurada.</strong>
+        <span id="syncDetail">Os registros estão só neste aparelho.</span>
+      </div>
+      <div class="sync-actions">
+        <a id="openSheet" class="sheet-link" target="_blank" rel="noopener" hidden>Abrir planilha</a>
+        <button id="syncNow" class="export-button" type="button">Sincronizar agora</button>
+      </div>
+    </aside>
+
+    <section class="workspace">
+      <nav class="tabs" aria-label="Seções">
+        <button class="tab active" type="button" data-view="formView">Novo registro</button>
+        <button class="tab" type="button" data-view="listView">Equipamentos <span id="tabCount">0</span></button>
+      </nav>
+
+      <section id="formView" class="view active">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow" id="formEyebrow">CADASTRO</p>
+            <h2 id="formTitle">Novo computador</h2>
+          </div>
+          <button id="cancelEdit" class="text-button" type="button" hidden>Cancelar edição</button>
+        </div>
+
+        <form id="inventoryForm" autocomplete="off">
+          <input id="recordId" name="recordId" type="hidden">
+          <div class="field-grid">
+            <label class="field">
+              <span>Patrimônio *</span>
+              <div class="input-action">
+                <input id="assetTag" name="assetTag" required inputmode="text" placeholder="Ex.: 289751">
+                <button class="scan-button" type="button" data-scan-target="assetTag" aria-label="Escanear patrimônio">Escanear</button>
+              </div>
+            </label>
+
+            <label class="field">
+              <span>Número de série *</span>
+              <div class="input-action">
+                <input id="serialNumber" name="serialNumber" required inputmode="text" placeholder="Ex.: ABC123456">
+                <button class="scan-button" type="button" data-scan-target="serialNumber" aria-label="Escanear número de série">Escanear</button>
+              </div>
+            </label>
+
+            <label class="field">
+              <span>Marca *</span>
+              <select id="brand" name="brand" required>
+                <option value="">Selecione</option>
+                <option>Positivo</option><option>Daten</option><option>Dell</option><option>Itautec</option><option>HP</option>
+                <option>Lenovo</option><option>Acer</option><option>Asus</option><option>Samsung</option><option>Outra</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>Modelo *</span>
+              <input id="model" name="model" required list="modelSuggestions" placeholder="Ex.: MASTER D610">
+              <datalist id="modelSuggestions">
+                <option value="MASTER D610"><option value="DC1B-T"><option value="DT02BV1"><option value="DT02BV2"><option value="OptiPlex 5050">
+              </datalist>
+            </label>
+          </div>
+
+          <fieldset>
+            <legend>Estado *</legend>
+            <div class="choice-grid two">
+              <label class="choice good"><input type="radio" name="state" value="OK" required><span>✓ Funcionando</span></label>
+              <label class="choice bad"><input type="radio" name="state" value="Defeito"><span>! Com defeito</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Situação *</legend>
+            <div class="choice-grid three">
+              <label class="choice"><input type="radio" name="status" value="Não formatado" required><span>Não formatado</span></label>
+              <label class="choice"><input type="radio" name="status" value="Em formatação"><span>Em formatação</span></label>
+              <label class="choice"><input type="radio" name="status" value="Formatado"><span>Formatado</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Componentes encontrados</legend>
+            <div class="check-grid">
+              <label><input type="checkbox" name="components" value="SSD"> SSD</label>
+              <label><input type="checkbox" name="components" value="HD"> HD</label>
+              <label><input type="checkbox" name="components" value="Memória RAM"> Memória RAM</label>
+            </div>
+          </fieldset>
+
+          <label class="field">
+            <span>Observações / laudo</span>
+            <textarea id="notes" name="notes" rows="4" placeholder="Ex.: Não liga; sem fonte; equipamento em bom estado."></textarea>
+          </label>
+
+          <div id="duplicateWarning" class="warning" role="alert" hidden></div>
+          <button class="primary-button" type="submit" id="saveButton">Salvar computador</button>
+        </form>
+      </section>
+
+      <section id="listView" class="view" hidden>
+        <div class="section-heading list-heading">
+          <div>
+            <p class="eyebrow" id="listEyebrow">ARQUIVO LOCAL</p>
+            <h2>Equipamentos</h2>
+          </div>
+          <button id="exportCsv" class="export-button" type="button">Exportar CSV</button>
+        </div>
+        <label class="search-box">
+          <span class="sr-only">Pesquisar equipamentos</span>
+          <input id="searchInput" type="search" placeholder="Pesquisar patrimônio, série, marca ou modelo">
+        </label>
+        <div id="recordList" class="record-list"></div>
+        <div id="emptyState" class="empty-state">
+          <strong>Nenhum computador registrado</strong>
+          <p>Cadastre o primeiro equipamento para começar o inventário.</p>
+        </div>
+      </section>
+    </section>
+
+  </main>
+
+  <div id="scannerDialog" class="dialog-backdrop" hidden>
+    <section class="dialog" role="dialog" aria-modal="true" aria-labelledby="scannerTitle">
+      <div class="dialog-header">
+        <h2 id="scannerTitle">Escanear código</h2>
+        <button id="closeScanner" class="close-button" type="button" aria-label="Fechar câmera">×</button>
+      </div>
+      <video id="scannerVideo" playsinline muted></video>
+      <p id="scannerMessage">Aponte a câmera para o código de barras.</p>
+      <button id="manualEntry" class="secondary-button" type="button">Digitar manualmente</button>
+    </section>
+  </div>
+
+  <div id="settingsDialog" class="dialog-backdrop" hidden>
+    <section class="dialog" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+      <div class="dialog-header">
+        <h2 id="settingsTitle">Configurações</h2>
+        <button id="closeSettings" class="close-button" type="button" aria-label="Fechar configurações">×</button>
+      </div>
+      <p id="settingsMessage" class="warning" hidden></p>
+      <form id="settingsForm" autocomplete="off">
+        <label class="field">
+          <span>Seu nome *</span>
+          <input id="cfgName" required maxlength="80" placeholder="Ex.: Gabriel">
+          <small>Vai na coluna "Registrado por" de cada computador que você salvar.</small>
+        </label>
+        <label class="field">
+          <span>Endereço da planilha da equipe</span>
+          <input id="cfgApi" type="url" inputmode="url" placeholder="https://script.google.com/macros/s/.../exec">
+          <small>URL do Apps Script publicado. Em branco, os dados ficam só neste aparelho.</small>
+        </label>
+        <label class="field">
+          <span>Chave da equipe</span>
+          <input id="cfgKey" placeholder="Combinada com quem criou a planilha">
+        </label>
+        <button class="primary-button" type="submit">Salvar e sincronizar</button>
+        <button id="copyTeamLink" class="secondary-button" type="button">Copiar link de acesso para a equipe</button>
+      </form>
+    </section>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
